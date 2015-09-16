@@ -12,19 +12,31 @@ namespace DataStreamTools
 {
     public class HydrateText
     {
-        public static string ReadStringFromEmbeddedResource(string xmlResourceName)
+        /// <summary>
+        /// Streams an embedded ressource text file out to a string. This overload defaults to the executing assembly. You can call Assembly.GetManifestResourceNames() to get a list of available resource names.
+        /// </summary>
+        /// <param name="embeddedResourceManifestName"></param>
+        /// <returns>A string that contains the text of an embedded resource file.</returns>
+        public static string ReadEmbeddedResourceText(string embeddedResourceManifestName)
         {
-            var assembly = Assembly.GetCallingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
 
-            string result = ReadStringFromEmbeddedResource(assembly, xmlResourceName);
+            string result = ReadEmbeddedResourceText(assembly, embeddedResourceManifestName);
 
             return result;
         }
-        public static string ReadStringFromEmbeddedResource(Assembly assembly, string xmlResourceName)
+
+        /// <summary>
+        /// Streams an embedded ressource text file within an assembly out to a string. You can call Assembly.GetManifestResourceNames() to get a list of available resource names.
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="embeddedResourceManifestName"></param>
+        /// <returns>A string that contains the text of an embedded resource file.</returns>
+        public static string ReadEmbeddedResourceText(Assembly assembly, string embeddedResourceManifestName)
         {
             string result = string.Empty;
 
-            using (Stream stream = assembly.GetManifestResourceStream(xmlResourceName))
+            using (Stream stream = assembly.GetManifestResourceStream(embeddedResourceManifestName))
             {
                 StreamReader reader = new StreamReader(stream);
                 result = reader.ReadToEnd();
